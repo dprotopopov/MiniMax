@@ -1,0 +1,15 @@
+D:\Projects\CudaFormula\CudaFormula\obj\Debug\CudaFormula.Form1.resources
+D:\Projects\CudaFormula\CudaFormula\obj\Debug\CudaFormula.Properties.Resources.resources
+D:\Projects\CudaFormula\CudaFormula\obj\Debug\CudaFormula.csproj.GenerateResource.Cache
+D:\Projects\CudaFormula\CudaFormula\bin\Debug\CudaFormula.exe.config
+D:\Projects\CudaFormula\CudaFormula\bin\Debug\CudaFormula.exe
+D:\Projects\CudaFormula\CudaFormula\bin\Debug\CudaFormula.pdb
+D:\Projects\CudaFormula\CudaFormula\bin\Debug\MiniMax.dll
+D:\Projects\CudaFormula\CudaFormula\bin\Debug\MyLibrary.dll
+D:\Projects\CudaFormula\CudaFormula\bin\Debug\MyMath.dll
+D:\Projects\CudaFormula\CudaFormula\bin\Debug\MiniMax.pdb
+D:\Projects\CudaFormula\CudaFormula\bin\Debug\MyLibrary.pdb
+D:\Projects\CudaFormula\CudaFormula\bin\Debug\MyMath.pdb
+D:\Projects\CudaFormula\CudaFormula\obj\Debug\CudaFormula.csprojResolveAssemblyReference.cache
+D:\Projects\CudaFormula\CudaFormula\obj\Debug\CudaFormula.exe
+D:\Projects\CudaFormula\CudaFormula\obj\Debug\CudaFormula.pdb

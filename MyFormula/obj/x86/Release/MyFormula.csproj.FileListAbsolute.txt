@@ -1,0 +1,14 @@
+D:\Projects\MiniMax\MyFormula\bin\x86\Release\MyFormula.dll.config
+D:\Projects\MiniMax\MyFormula\bin\x86\Release\MyFormula.dll
+D:\Projects\MiniMax\MyFormula\bin\x86\Release\MyFormula.pdb
+D:\Projects\MiniMax\MyFormula\bin\x86\Release\MiniMax.dll
+D:\Projects\MiniMax\MyFormula\bin\x86\Release\MyLibrary.dll
+D:\Projects\MiniMax\MyFormula\bin\x86\Release\MyMath.dll
+D:\Projects\MiniMax\MyFormula\bin\x86\Release\MiniMax.pdb
+D:\Projects\MiniMax\MyFormula\bin\x86\Release\MyLibrary.pdb
+D:\Projects\MiniMax\MyFormula\bin\x86\Release\MyMath.pdb
+D:\Projects\MiniMax\MyFormula\obj\x86\Release\MyFormula.csprojResolveAssemblyReference.cache
+D:\Projects\MiniMax\MyFormula\obj\x86\Release\MyFormula.Properties.Resources.resources
+D:\Projects\MiniMax\MyFormula\obj\x86\Release\MyFormula.csproj.GenerateResource.Cache
+D:\Projects\MiniMax\MyFormula\obj\x86\Release\MyFormula.dll
+D:\Projects\MiniMax\MyFormula\obj\x86\Release\MyFormula.pdb

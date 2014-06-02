@@ -1,0 +1,14 @@
+D:\Projects\CudaFormula\CudaFormula\obj\Release\CudaFormula.csprojResolveAssemblyReference.cache
+D:\Projects\CudaFormula\CudaFormula\obj\Release\CudaFormula.Properties.Resources.resources
+D:\Projects\CudaFormula\CudaFormula\obj\Release\CudaFormula.csproj.GenerateResource.Cache
+D:\Projects\CudaFormula\CudaFormula\bin\Release\CudaFormula.dll.config
+D:\Projects\CudaFormula\CudaFormula\bin\Release\CudaFormula.dll
+D:\Projects\CudaFormula\CudaFormula\bin\Release\CudaFormula.pdb
+D:\Projects\CudaFormula\CudaFormula\bin\Release\MiniMax.dll
+D:\Projects\CudaFormula\CudaFormula\bin\Release\MyLibrary.dll
+D:\Projects\CudaFormula\CudaFormula\bin\Release\MyMath.dll
+D:\Projects\CudaFormula\CudaFormula\bin\Release\MiniMax.pdb
+D:\Projects\CudaFormula\CudaFormula\bin\Release\MyLibrary.pdb
+D:\Projects\CudaFormula\CudaFormula\bin\Release\MyMath.pdb
+D:\Projects\CudaFormula\CudaFormula\obj\Release\CudaFormula.dll
+D:\Projects\CudaFormula\CudaFormula\obj\Release\CudaFormula.pdb
