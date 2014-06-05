@@ -91,7 +91,10 @@
     <Compile Include="Attributes\MiniMaxRestrictionAttribute.cs" />
     <Compile Include="Attributes\MiniMaxTargetAttribute.cs" />
     <Compile Include="Attributes\MiniMaxVariableAttribute.cs" />
+    <Compile Include="BooleanBranchAndBoundSolver.cs" />
+    <Compile Include="BranchAndBound.cs" />
     <Compile Include="Builder.cs" />
+    <Compile Include="CompareOperand.cs" />
     <Compile Include="Forms\BuildChooseDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,7 +126,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="GomorySolver.cs" />
-    <Compile Include="IMiniMax.cs" />
+    <Compile Include="ILinearMiniMax.cs" />
     <Compile Include="ISolver.cs" />
     <Compile Include="Formula.cs" />
     <Compile Include="Target.cs" />

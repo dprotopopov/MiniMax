@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMath", "..\MyMathLibrary\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFormula", "MyFormula\MyFormula.csproj", "{8B47C010-66F9-4CFD-9489-2BFF415EDC39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniMax.Editor", "MiniMax.Editor\MiniMax.Editor.csproj", "{ACFAAE4F-6E73-4FB7-940F-5D4A74D9E50C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,14 @@ Global
 		{8B47C010-66F9-4CFD-9489-2BFF415EDC39}.Release|x64.ActiveCfg = Release|x64
 		{8B47C010-66F9-4CFD-9489-2BFF415EDC39}.Release|x64.Build.0 = Release|x64
 		{8B47C010-66F9-4CFD-9489-2BFF415EDC39}.Release|x86.ActiveCfg = Release|Any CPU
+		{ACFAAE4F-6E73-4FB7-940F-5D4A74D9E50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACFAAE4F-6E73-4FB7-940F-5D4A74D9E50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACFAAE4F-6E73-4FB7-940F-5D4A74D9E50C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ACFAAE4F-6E73-4FB7-940F-5D4A74D9E50C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ACFAAE4F-6E73-4FB7-940F-5D4A74D9E50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACFAAE4F-6E73-4FB7-940F-5D4A74D9E50C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACFAAE4F-6E73-4FB7-940F-5D4A74D9E50C}.Release|x64.ActiveCfg = Release|Any CPU
+		{ACFAAE4F-6E73-4FB7-940F-5D4A74D9E50C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

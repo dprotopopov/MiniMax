@@ -1,0 +1,16 @@
+D:\Projects\MiniMax\MiniMax\bin\Debug\MiniMax.dll.config
+D:\Projects\MiniMax\MiniMax\bin\Debug\MiniMax.dll
+D:\Projects\MiniMax\MiniMax\bin\Debug\MiniMax.pdb
+D:\Projects\MiniMax\MiniMax\bin\Debug\MyLibrary.dll
+D:\Projects\MiniMax\MiniMax\bin\Debug\MyMath.dll
+D:\Projects\MiniMax\MiniMax\bin\Debug\MyLibrary.pdb
+D:\Projects\MiniMax\MiniMax\bin\Debug\MyMath.pdb
+D:\Projects\MiniMax\MiniMax\obj\Debug\MiniMax.csprojResolveAssemblyReference.cache
+D:\Projects\MiniMax\MiniMax\obj\Debug\MiniMax.Forms.BuildChooseDialog.resources
+D:\Projects\MiniMax\MiniMax\obj\Debug\MiniMax.Forms.BuilderDialog.resources
+D:\Projects\MiniMax\MiniMax\obj\Debug\MiniMax.Forms.ChooseDialog.resources
+D:\Projects\MiniMax\MiniMax\obj\Debug\MiniMax.Forms.EnterDialog.resources
+D:\Projects\MiniMax\MiniMax\obj\Debug\MiniMax.Properties.Resources.resources
+D:\Projects\MiniMax\MiniMax\obj\Debug\MiniMax.csproj.GenerateResource.Cache
+D:\Projects\MiniMax\MiniMax\obj\Debug\MiniMax.dll
+D:\Projects\MiniMax\MiniMax\obj\Debug\MiniMax.pdb

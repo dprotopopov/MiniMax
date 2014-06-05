@@ -39,8 +39,10 @@ namespace MiniMax.Forms
             get
             {
                 var formula = new Formula(Type);
-                return new MyLibrary.Collections.Properties(DataBoundItem,
-                    formula.GetProperties(typeof (MiniMaxOutputAttribute)));
+                return DataBoundItem != null
+                    ? new MyLibrary.Collections.Properties(DataBoundItem,
+                        formula.GetProperties(typeof (MiniMaxOutputAttribute)))
+                    : null;
             }
         }
 
@@ -55,6 +57,10 @@ namespace MiniMax.Forms
             get { return (IEnumerable<object>) dataGridView1.DataSource; }
             set { dataGridView1.DataSource = value; }
         }
+
+        public ProgressCallback ProgressCallback { get; set; }
+        public AppendLineCallback AppendLineCallback { get; set; }
+        public CompliteCallback CompliteCallback { get; set; }
 
         private void buttonRebuild_Click(object sender, EventArgs e)
         {
@@ -119,24 +125,21 @@ namespace MiniMax.Forms
             Close();
         }
 
-        void Progress(long current, long total)
+        private void Progress(long current, long total)
         {
             Debug.Assert(current <= total);
             if (progressBar1.InvokeRequired)
             {
                 ProgressCallback d = Progress;
-                object[] objects = { current, total };
+                object[] objects = {current, total};
                 Invoke(d, objects);
             }
             else
             {
-                progressBar1.Maximum = (int)Math.Min(total, 10000);
-                progressBar1.Value = (int)(current * progressBar1.Maximum / (1 + total));
+                progressBar1.Maximum = (int) Math.Min(total, 10000);
+                progressBar1.Value = (int) (current*progressBar1.Maximum/(1 + total));
                 Application.DoEvents();
             }
         }
-        public ProgressCallback ProgressCallback { get; set; }
-        public AppendLineCallback AppendLineCallback { get; set; }
-        public CompliteCallback CompliteCallback { get; set; }
     }
 }

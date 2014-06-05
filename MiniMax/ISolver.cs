@@ -1,11 +1,14 @@
-﻿using MyMath;
+﻿using System.Collections.Generic;
+using MyLibrary.Trace;
+using MyMath;
 
 namespace MiniMax
 {
     /// Пусть дана следующая задача:
-    /// max {C(x)=∑cixi|∑ajixi{≤=≥}bj, j = 1,m}, 
+    /// max {C(x)=∑cixi|∑ajixi{≤=≥}bj, j = 1,m},
     public interface ISolver<T>
     {
-        void Execute(IMiniMax<T> minimax, ref Vector<T> optimalVector, ref T optimalValue);
+        bool Execute(ILinearMiniMax<T> minimax, ref IEnumerable<Vector<T>> optimalVectors,
+            ref IEnumerable<T> optimalValues, ITrace trace);
     }
 }

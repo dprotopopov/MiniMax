@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyCudaFormula.cs" />
+    <Compile Include="MyMpiFormula.cs" />
     <Compile Include="NvidiaFormula.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
