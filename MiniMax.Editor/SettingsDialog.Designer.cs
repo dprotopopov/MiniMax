@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButtonBranchAndBound = new System.Windows.Forms.RadioButton();
+            this.radioButtonBranchAndBoundMulti = new System.Windows.Forms.RadioButton();
+            this.radioButtonParagraph42 = new System.Windows.Forms.RadioButton();
+            this.radioButtonBranchAndBoundTree = new System.Windows.Forms.RadioButton();
             this.radioButtonGomory = new System.Windows.Forms.RadioButton();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -38,7 +40,9 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.radioButtonBranchAndBound);
+            this.groupBox1.Controls.Add(this.radioButtonBranchAndBoundMulti);
+            this.groupBox1.Controls.Add(this.radioButtonParagraph42);
+            this.groupBox1.Controls.Add(this.radioButtonBranchAndBoundTree);
             this.groupBox1.Controls.Add(this.radioButtonGomory);
             this.groupBox1.Location = new System.Drawing.Point(103, 58);
             this.groupBox1.Name = "groupBox1";
@@ -47,21 +51,43 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Алгоритм";
             // 
-            // radioButtonBranchAndBound
+            // radioButtonBranchAndBoundMulti
             // 
-            this.radioButtonBranchAndBound.AutoSize = true;
-            this.radioButtonBranchAndBound.Location = new System.Drawing.Point(111, 92);
-            this.radioButtonBranchAndBound.Name = "radioButtonBranchAndBound";
-            this.radioButtonBranchAndBound.Size = new System.Drawing.Size(251, 21);
-            this.radioButtonBranchAndBound.TabIndex = 1;
-            this.radioButtonBranchAndBound.TabStop = true;
-            this.radioButtonBranchAndBound.Text = "Двоичный метод ветвей и границ";
-            this.radioButtonBranchAndBound.UseVisualStyleBackColor = true;
+            this.radioButtonBranchAndBoundMulti.AutoSize = true;
+            this.radioButtonBranchAndBoundMulti.Location = new System.Drawing.Point(67, 92);
+            this.radioButtonBranchAndBoundMulti.Name = "radioButtonBranchAndBoundMulti";
+            this.radioButtonBranchAndBoundMulti.Size = new System.Drawing.Size(370, 21);
+            this.radioButtonBranchAndBoundMulti.TabIndex = 3;
+            this.radioButtonBranchAndBoundMulti.TabStop = true;
+            this.radioButtonBranchAndBoundMulti.Text = "Двоичный метод ветвей и границ (множественный)";
+            this.radioButtonBranchAndBoundMulti.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonParagraph42
+            // 
+            this.radioButtonParagraph42.AutoSize = true;
+            this.radioButtonParagraph42.Location = new System.Drawing.Point(67, 119);
+            this.radioButtonParagraph42.Name = "radioButtonParagraph42";
+            this.radioButtonParagraph42.Size = new System.Drawing.Size(115, 21);
+            this.radioButtonParagraph42.TabIndex = 2;
+            this.radioButtonParagraph42.TabStop = true;
+            this.radioButtonParagraph42.Text = "Параграф 42";
+            this.radioButtonParagraph42.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonBranchAndBoundTree
+            // 
+            this.radioButtonBranchAndBoundTree.AutoSize = true;
+            this.radioButtonBranchAndBoundTree.Location = new System.Drawing.Point(67, 65);
+            this.radioButtonBranchAndBoundTree.Name = "radioButtonBranchAndBoundTree";
+            this.radioButtonBranchAndBoundTree.Size = new System.Drawing.Size(312, 21);
+            this.radioButtonBranchAndBoundTree.TabIndex = 1;
+            this.radioButtonBranchAndBoundTree.TabStop = true;
+            this.radioButtonBranchAndBoundTree.Text = "Двоичный метод ветвей и границ (дерево)";
+            this.radioButtonBranchAndBoundTree.UseVisualStyleBackColor = true;
             // 
             // radioButtonGomory
             // 
             this.radioButtonGomory.AutoSize = true;
-            this.radioButtonGomory.Location = new System.Drawing.Point(111, 64);
+            this.radioButtonGomory.Location = new System.Drawing.Point(67, 41);
             this.radioButtonGomory.Name = "radioButtonGomory";
             this.radioButtonGomory.Size = new System.Drawing.Size(144, 21);
             this.radioButtonGomory.TabIndex = 0;
@@ -108,9 +134,11 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton radioButtonBranchAndBound;
+        private System.Windows.Forms.RadioButton radioButtonBranchAndBoundTree;
         private System.Windows.Forms.RadioButton radioButtonGomory;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RadioButton radioButtonParagraph42;
+        private System.Windows.Forms.RadioButton radioButtonBranchAndBoundMulti;
     }
 }

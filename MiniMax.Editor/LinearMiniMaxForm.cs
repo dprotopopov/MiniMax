@@ -246,7 +246,7 @@ namespace MiniMax.Editor
         {
             var theData = new string[Targets + Restrictions, Variables + 2];
             var write = new object();
-            theData[0, Variables] = "min";
+            theData[0, Variables] = "max";
             Parallel.ForEach(Enumerable.Range(0, Variables),
                 index => { lock (write) theData[0, index] = "1"; });
             Parallel.ForEach(
@@ -256,12 +256,15 @@ namespace MiniMax.Editor
                 {
                     int i = pair.row;
                     int j = pair.col;
-                    lock (write) theData[i, j] = ((i + 1)%(j + 1) == 0 || (j + 1)%(i + 1) == 0) ? "1" : "0";
+                    lock (write)
+                        theData[i, j] =
+                            ((double) (((j + 1)%(i + 1)) + ((i + 1)%(j + 1)))/(1 + i + j)).ToString(
+                                CultureInfo.InvariantCulture);
                 });
             Parallel.ForEach(Enumerable.Range(Targets, Restrictions), index =>
             {
                 lock (write) theData[index, Variables] = "<=";
-                lock (write) theData[index, Variables + 1] = (Variables>>1).ToString();
+                lock (write) theData[index, Variables + 1] = (1.5).ToString(CultureInfo.InvariantCulture);
             });
             DataGridViewSystem.TheData = theData;
         }

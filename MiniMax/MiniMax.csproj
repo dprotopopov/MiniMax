@@ -91,7 +91,9 @@
     <Compile Include="Attributes\MiniMaxRestrictionAttribute.cs" />
     <Compile Include="Attributes\MiniMaxTargetAttribute.cs" />
     <Compile Include="Attributes\MiniMaxVariableAttribute.cs" />
-    <Compile Include="BooleanBranchAndBoundSolver.cs" />
+    <Compile Include="BooleanTreeBranchAndBoundSolver.cs" />
+    <Compile Include="BooleanBranchAndBoundSolver42.cs" />
+    <Compile Include="BooleanMultiBranchAndBoundSolver.cs" />
     <Compile Include="BranchAndBound.cs" />
     <Compile Include="Builder.cs" />
     <Compile Include="CompareOperand.cs" />

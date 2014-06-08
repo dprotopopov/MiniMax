@@ -78,7 +78,7 @@
             this.numericUpDownRestrictions.Size = new System.Drawing.Size(120, 22);
             this.numericUpDownRestrictions.TabIndex = 1;
             this.numericUpDownRestrictions.Value = new decimal(new int[] {
-            5,
+            10,
             0,
             0,
             0});

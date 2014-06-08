@@ -43,7 +43,9 @@ namespace MiniMax.Editor
             if (!SettingsDialog.IsValid()) return;
             ISolver<double> solver;
             if (SettingsDialog.Gomory) solver = new GomorySolver<double>();
-            else if (SettingsDialog.BranchAndBound) solver = new BooleanBranchAndBoundSolver<double>();
+            else if (SettingsDialog.BranchAndBoundTree) solver = new BooleanTreeBranchAndBoundSolver<double>();
+            else if (SettingsDialog.BranchAndBoundMulti) solver = new BooleanMultiBranchAndBoundSolver<double>();
+            else if (SettingsDialog.Paragraph42) solver = new BooleanBranchAndBoundSolver42<double>();
             else throw new NotImplementedException();
             if (!child.IsValid())
             {

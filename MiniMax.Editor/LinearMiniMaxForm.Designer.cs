@@ -59,8 +59,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(842, 612);
-            this.splitContainer1.SplitterDistance = 430;
+            this.splitContainer1.Size = new System.Drawing.Size(1052, 726);
+            this.splitContainer1.SplitterDistance = 510;
             this.splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -77,8 +77,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBoxSolution);
-            this.splitContainer2.Size = new System.Drawing.Size(842, 430);
-            this.splitContainer2.SplitterDistance = 280;
+            this.splitContainer2.Size = new System.Drawing.Size(1052, 510);
+            this.splitContainer2.SplitterDistance = 332;
             this.splitContainer2.TabIndex = 0;
             // 
             // groupBoxSystem
@@ -86,7 +86,7 @@
             this.groupBoxSystem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxSystem.Location = new System.Drawing.Point(0, 0);
             this.groupBoxSystem.Name = "groupBoxSystem";
-            this.groupBoxSystem.Size = new System.Drawing.Size(842, 280);
+            this.groupBoxSystem.Size = new System.Drawing.Size(1052, 332);
             this.groupBoxSystem.TabIndex = 0;
             this.groupBoxSystem.TabStop = false;
             this.groupBoxSystem.Text = "Система";
@@ -96,7 +96,7 @@
             this.groupBoxSolution.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxSolution.Location = new System.Drawing.Point(0, 0);
             this.groupBoxSolution.Name = "groupBoxSolution";
-            this.groupBoxSolution.Size = new System.Drawing.Size(842, 146);
+            this.groupBoxSolution.Size = new System.Drawing.Size(1052, 174);
             this.groupBoxSolution.TabIndex = 0;
             this.groupBoxSolution.TabStop = false;
             this.groupBoxSolution.Text = "Решение";
@@ -107,7 +107,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(842, 178);
+            this.groupBox1.Size = new System.Drawing.Size(1052, 212);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Журнал";
@@ -119,14 +119,14 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(836, 157);
+            this.textBox1.Size = new System.Drawing.Size(1046, 191);
             this.textBox1.TabIndex = 0;
             // 
             // LinearMiniMaxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(842, 612);
+            this.ClientSize = new System.Drawing.Size(1052, 726);
             this.Controls.Add(this.splitContainer1);
             this.Name = "LinearMiniMaxForm";
             this.Text = "LinearMiniMaxForm";
