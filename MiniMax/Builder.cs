@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using MiniMax.Attributes;
 using MyLibrary.Collections;
 using MyLibrary.Trace;
@@ -27,23 +28,23 @@ namespace MiniMax
         public AppendLineCallback AppendLineCallback { get; set; }
         public CompliteCallback CompliteCallback { get; set; }
 
-        public void SaveAs(string fileName, IEnumerable<object> dataEnumerable)
+        public void SaveAs(string fileName, IEnumerable<object> dataSource)
         {
             PropertyInfo[] props = Type.GetProperties();
             using (StreamWriter writer = File.CreateText(fileName))
             {
                 writer.WriteLine(string.Join(";", props.Select(p => p.Name)));
-                foreach (object data in dataEnumerable)
+                foreach (object data in dataSource)
                 {
                     writer.WriteLine(string.Join(";", props.Select(p => p.GetValue(data, null))));
                 }
             }
         }
 
-        public void LoadFrom(string fileName, ref IEnumerable<object> dataEnumerable)
+        public void LoadFrom(string fileName, ref IEnumerable<object> dataSource)
         {
             PropertyInfo[] props = Type.GetProperties();
-            var list = new StackListQueue<object>(dataEnumerable);
+            var list = new StackListQueue<object>(dataSource);
             using (StreamReader reader = File.OpenText(fileName))
             {
                 string line = reader.ReadLine();
@@ -64,7 +65,7 @@ namespace MiniMax
                         pair.Value.SetValue(x, Convert.ChangeType(split[pair.Key], pair.Value.PropertyType));
                     list.Add(x);
                 }
-                dataEnumerable = list;
+                dataSource = list;
             }
         }
 
@@ -74,16 +75,12 @@ namespace MiniMax
         ///     ey = a * ex + b
         ///     s2y = ey^2 - e2y = a^2 * s2x
         /// </summary>
-        /// <param name="dataEnumerable"></param>
-        /// <param name="variables"></param>
-        /// <param name="values"></param>
-        /// <param name="A"></param>
-        /// <param name="B"></param>
-        public static void DetectLinearDependencies(IEnumerable<object> dataEnumerable, PropertyInfo variable,
+        /// <param name="dataSource"></param>
+        public static void DetectLinearDependencies(IEnumerable<object> dataSource, PropertyInfo variable,
             PropertyInfo value, ref decimal a, ref decimal b)
         {
-            IEnumerable<decimal> y = dataEnumerable.Select(obj => Convert.ToDecimal(value.GetValue(obj, null)));
-            IEnumerable<decimal> x = dataEnumerable.Select(obj => Convert.ToDecimal(value.GetValue(obj, null)));
+            IEnumerable<decimal> y = dataSource.Select(obj => Convert.ToDecimal(value.GetValue(obj, null)));
+            IEnumerable<decimal> x = dataSource.Select(obj => Convert.ToDecimal(value.GetValue(obj, null)));
             decimal ex = x.Average(v => v);
             decimal ey = y.Average(v => v);
             decimal s2x = x.Average(v => v*v) - ex*ex;
@@ -96,7 +93,7 @@ namespace MiniMax
             b = ey - a*ex;
         }
 
-        public static void DetectLinearDependencies(IEnumerable<object> dataEnumerable,
+        public static void DetectLinearDependencies(IEnumerable<object> dataSource,
             IEnumerable<PropertyInfo> variables,
             IEnumerable<PropertyInfo> values, ref Matrix<decimal> matrix, ref Vector<decimal> vector)
         {
@@ -107,19 +104,19 @@ namespace MiniMax
             Debug.Assert(matrix.Columns == columns);
             IEnumerable<decimal> ey =
                 values.Select(
-                    value => dataEnumerable.Select(obj => Convert.ToDecimal(value.GetValue(obj, null))).Average(v => v));
+                    value => dataSource.Select(obj => Convert.ToDecimal(value.GetValue(obj, null))).Average(v => v));
             IEnumerable<decimal> ex =
                 variables.Select(
-                    value => dataEnumerable.Select(obj => Convert.ToDecimal(value.GetValue(obj, null))).Average(v => v));
+                    value => dataSource.Select(obj => Convert.ToDecimal(value.GetValue(obj, null))).Average(v => v));
             IEnumerable<decimal> s2y =
                 values.Select(
                     (value, index) =>
-                        dataEnumerable.Select(obj => Convert.ToDecimal(value.GetValue(obj, null))).Average(v => v*v) -
+                        dataSource.Select(obj => Convert.ToDecimal(value.GetValue(obj, null))).Average(v => v*v) -
                         ey.ElementAt(index)*ey.ElementAt(index));
             IEnumerable<decimal> s2x =
                 variables.Select(
                     (value, index) =>
-                        dataEnumerable.Select(obj => Convert.ToDecimal(value.GetValue(obj, null))).Average(v => v*v) -
+                        dataSource.Select(obj => Convert.ToDecimal(value.GetValue(obj, null))).Average(v => v*v) -
                         ex.ElementAt(index)*ex.ElementAt(index));
             foreach (
                 var pair in
@@ -156,9 +153,9 @@ namespace MiniMax
         ///     Группируем по опциям
         ///     Оставляем опции только с наилучшим значением
         /// </summary>
-        /// <param name="dataEnumerable"></param>
+        /// <param name="dataSource"></param>
         /// <param name="type"></param>
-        public void BuildOptionTable(ref IEnumerable<object> dataEnumerable, object constant)
+        public void BuildOptionTable(ref IEnumerable<object> dataSource, object constant)
         {
             var formula = new Formula(Type);
             var list = new StackListQueue<object>(constant);
@@ -182,7 +179,7 @@ namespace MiniMax
                     PropertyInfo valueProp = type.GetProperty("Values");
                     values.AddRangeExcept((object[]) valueProp.GetValue(custom, null));
                 }
-                if (ProgressCallback != null) ProgressCallback(current, total += list.Count() * values.Count());
+                if (ProgressCallback != null) ProgressCallback(current, total += list.Count()*values.Count());
                 var next = new StackListQueue<object>();
                 foreach (object item in list)
                 {
@@ -218,7 +215,7 @@ namespace MiniMax
             }
             var result = new Dictionary<object, decimal>();
             if (ProgressCallback != null)
-                ProgressCallback(current, total += list.Count() * (list.Count() - 1) / 2);
+                ProgressCallback(current, total += list.Count()*(list.Count() - 1)/2);
             for (int i = 0; i < f.Keys.Count - 1; i++)
             {
                 object key1 = f.Keys.ElementAt(i);
@@ -234,7 +231,19 @@ namespace MiniMax
                     break;
                 }
             }
-            dataEnumerable = new StackListQueue<object>(result.Keys);
+            dataSource = new StackListQueue<object>(result.Keys);
+        }
+
+        public string GetText(IEnumerable<object> dataSource)
+        {
+            PropertyInfo[] props = Type.GetProperties();
+            var builder = new StringBuilder();
+            builder.AppendLine(string.Join(";", props.Select(p => p.Name)));
+            foreach (object data in dataSource)
+            {
+                builder.AppendLine(string.Join(";", props.Select(p => p.GetValue(data, null))));
+            }
+            return builder.ToString();
         }
     }
 }

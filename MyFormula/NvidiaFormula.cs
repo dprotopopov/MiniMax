@@ -5,75 +5,79 @@ using MiniMax.Attributes;
 
 namespace MyFormula
 {
-    [TypeConverter(typeof (ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class NvidiaFormula
     {
+        /// <summary>
+        ///     число нитей в варпе;
+        /// </summary>
+        [Category("Опции")]
+        [Description("число нитей в варпе")]
+        [MiniMaxOption(1, 3, 7, 15, 31, 63, 127, 255, 511, 1023)]
+        [MiniMaxInput]
+        public decimal Nw { get; set; }
+
         /// <summary>
         ///     число нитей в блоке;
         /// </summary>
         [Category("Переменные")]
         [Description("число нитей в блоке")]
-        [MiniMaxVariable]
+        [MiniMaxVariable(1, 3, 7, 15, 31, 63, 127, 255, 511, 1023)]
+        [MiniMaxOutput]
         public decimal N { get; set; }
 
         /// <summary>
         ///     число варпов;
         ///     Число варпов рассчитывается как частное числа нитей в блоке на число нитей в варпе.
         /// </summary>
-        [Category("Переменные")]
+        [Category("Справочно")]
         [Description("число варпов")]
         [MiniMaxCalculated]
         public decimal W
         {
-            get { return Math.Ceiling(N/Nw); }
+            get { return Math.Ceiling(N / Nw); }
         }
 
         /// <summary>
         ///     число активных нитей на мультипроцессор;
         /// </summary>
-        [Category("Переменные")]
+        [Category("Справочно")]
         [Description("число активных нитей на мультипроцессор")]
-        [MiniMaxTarget(Target.Maximum)]
         [MiniMaxCalculated]
         public decimal Na
         {
-            get { return Math.Min(Nmax, Ba*N); }
+            get { return Ba * N; }
         }
 
         /// <summary>
         ///     число активных варпов на мультипроцессор;
         /// </summary>
-        [Category("Переменные")]
+        [Category("Справочно")]
         [Description("число активных варпов на мультипроцессор")]
         [MiniMaxCalculated]
-        public decimal Wa { get; set; }
+        public decimal Wa
+        {
+            get { return Ba * W; }
+        }
 
         /// <summary>
         ///     число активных блоков на мультипроцессор;
         ///     Для эффективного использования GPU число активных нитей и активных блоков на мультипроцессоре должно быть
         ///     максимальным.
         /// </summary>
-        [Category("Переменные")]
+        [Category("Справочно")]
         [Description("число активных блоков на мультипроцессор")]
         [MiniMaxTarget(Target.Maximum)]
         [MiniMaxCalculated]
         public decimal Ba
         {
-            get { return Math.Min(Bmax, Math.Floor(Wmax/W)); }
+            get { return Math.Min(Bmax, Math.Floor(Wmax / W)); }
         }
-
-        /// <summary>
-        ///     число нитей в варпе;
-        /// </summary>
-        [Category("Переменные")]
-        [Description("число нитей в варпе")]
-        [MiniMaxVariable]
-        public decimal Nw { get; set; }
 
         /// <summary>
         ///     максимальное число нитей на блок;
         /// </summary>
-        [Category("Переменные")]
+        [Category("Константы")]
         [Description("максимальное число нитей на блок")]
         [MiniMaxConstant]
         public decimal Nbmax { get; set; }
@@ -81,6 +85,7 @@ namespace MyFormula
         /// <summary>
         ///     максимальное число варпов на мультипроцессор;
         /// </summary>
+        [Category("Константы")]
         [Description("максимальное число варпов на мультипроцессор")]
         [MiniMaxConstant]
         public decimal Wmax { get; set; }
@@ -88,7 +93,7 @@ namespace MyFormula
         /// <summary>
         ///     максимальное число блоков на мультипроцессор;
         /// </summary>
-        [Category("Переменные")]
+        [Category("Константы")]
         [Description("максимальное число блоков на мультипроцессор")]
         [MiniMaxConstant]
         public decimal Bmax { get; set; }
@@ -96,35 +101,19 @@ namespace MyFormula
         /// <summary>
         ///     максимальное число нитей на мультипроцессор;
         /// </summary>
-        [Category("Переменные")]
+        [Category("Константы")]
         [MiniMaxConstant]
         [Description("максимальное число нитей на мультипроцессор")]
         public decimal Nmax { get; set; }
 
-        [MiniMaxRestriction]
-        [MiniMaxCalculated]
-        public bool waLeWmax
-        {
-            get { return Wa <= Wmax; }
-        }
-
-        /// Число активных варпов на мультипроцессоре – это произведение числа активных блоков на число варпов, и получившееся
-        /// произведение должно быть меньше максимального числа варпов на мультипроцессоре.
-        [Category("Ограничения")]
-        [MiniMaxRestriction]
-        [MiniMaxCalculated]
-        public bool waEqBaW
-        {
-            get { return Wa == Ba*W; }
-        }
 
         /// Максимальное число нитей на мультипроцессоре – это произведение максимального числа варпов на число нитей в варпе
         [Category("Ограничения")]
         [MiniMaxRestriction]
         [MiniMaxCalculated]
-        public bool nmaxEqWmaxN
+        public bool nmaxLeWmaxN
         {
-            get { return Nmax == Wmax*N; }
+            get { return Nmax <= Wmax * N; }
         }
 
         /// Число нитей в блоке целое число, которое не может быть меньше единицы и больше максимального числа нитей в блоке.

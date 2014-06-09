@@ -62,6 +62,18 @@ namespace MiniMax.Forms
         public AppendLineCallback AppendLineCallback { get; set; }
         public CompliteCallback CompliteCallback { get; set; }
 
+        public override string ToString()
+        {
+            var dataArray = new Builder(Type)
+            {
+                ProgressCallback = ProgressCallback,
+                AppendLineCallback = AppendLineCallback,
+                CompliteCallback = CompliteCallback
+            };
+            IEnumerable<object> dataSource = new StackListQueue<object>(DataSource);
+            return dataArray.GetText(dataSource);
+        }
+
         private void buttonRebuild_Click(object sender, EventArgs e)
         {
             buttonRebuild.Enabled = false;

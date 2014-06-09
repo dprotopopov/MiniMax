@@ -85,7 +85,7 @@ namespace MyFormula
         ///     число нитей в блоке;
         /// </summary>
         [Category("Переменные")]
-        [Description("число нитей в блоке")]
+        [Description("число нитей")]
         [MiniMaxVariable(1, 3, 7, 15, 31, 63, 127, 255, 511, 1023)]
         [MiniMaxOutput]
         public decimal N { get; set; }
