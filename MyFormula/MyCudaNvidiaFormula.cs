@@ -46,7 +46,7 @@ namespace MyFormula
         [Description(
             "среднее количество нитей задействованных в параллельном алгоритме сортировки массива для обработки i-того блока массива"
             )]
-        [MiniMaxOption(1, 3, 7, 15, 31, 63, 127)]
+        [MiniMaxOption(1, 3, 7, 15, 31, 63)]
         [MiniMaxInput]
         public decimal Xi { get; set; }
 
@@ -64,7 +64,7 @@ namespace MyFormula
         /// </summary>
         [Category("Опции")]
         [Description("среднее число потоковых блоков в i-том блоке исходного массива")]
-        [MiniMaxOption(1, 10, 100, 1000)]
+        [MiniMaxOption(1, 10, 100)]
         [MiniMaxInput]
         public decimal Bi { get; set; }
 
@@ -73,7 +73,7 @@ namespace MyFormula
         /// </summary>
         [Category("Опции")]
         [Description("количество блоков массива")]
-        [MiniMaxOption(1, 10, 100, 1000)]
+        [MiniMaxOption(1, 10, 100)]
         [MiniMaxInput]
         public decimal Q { get; set; }
 
@@ -159,7 +159,7 @@ namespace MyFormula
         /// </summary>
         [Category("Переменные")]
         [Description("число нитей в варпе")]
-        [MiniMaxVariable(1, 3, 7, 15, 31, 63, 127)]
+        [MiniMaxVariable(1, 3, 7, 15, 31, 63)]
         [MiniMaxInput]
         public decimal Nw { get; set; }
 
@@ -262,7 +262,7 @@ namespace MyFormula
         /// </summary>
         [Category("Переменные")]
         [Description("число нитей в блоке")]
-        [MiniMaxVariable(1, 3, 7, 15, 31, 63, 127)]
+        [MiniMaxVariable(1, 3, 7, 15, 31, 63)]
         [MiniMaxOutput]
         public decimal BlockSize { get; set; }
 
@@ -271,7 +271,7 @@ namespace MyFormula
         /// </summary>
         [Category("Переменные")]
         [Description("число блоков в гриде")]
-        [MiniMaxVariable(1, 3, 7, 15, 31, 63, 127)]
+        [MiniMaxVariable(1, 3, 7, 15, 31, 63)]
         [MiniMaxOutput]
         public decimal GridSize { get; set; }
 

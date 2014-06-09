@@ -213,25 +213,23 @@ namespace MiniMax
                 foreach (object item in list)
                     f[item] += valueTarget*Convert.ToDecimal(prop.GetValue(item, null));
             }
-            var result = new Dictionary<object, decimal>();
+            var result = new StackListQueue<object>();
             if (ProgressCallback != null)
-                ProgressCallback(current, total += list.Count()*(list.Count() - 1)/2);
-            for (int i = 0; i < f.Keys.Count - 1; i++)
+                ProgressCallback(current, total += list.Count());
+            while (list.Any())
             {
-                object key1 = f.Keys.ElementAt(i);
-                result.Add(key1, f[key1]);
-                for (int j = i + 1; j < f.Keys.Count; j++)
-                {
-                    object key2 = f.Keys.ElementAt(j);
-                    if (ProgressCallback != null) ProgressCallback(++current, total);
-                    if (!union1.All(prop => prop.GetValue(key1, null).Equals(prop.GetValue(key2, null))) ||
-                        f[key1] >= f[key2] || result.ContainsKey(key2)) continue;
-                    result.Remove(key1);
-                    result.Add(key2, f[key2]);
-                    break;
-                }
+                object key1 = list.First();
+                var list1 =
+                    new StackListQueue<object>(
+                        list.Where(
+                            item => union1.All(prop => prop.GetValue(item, null).Equals(prop.GetValue(key1, null)))));
+                decimal max = list1.Max(item => f[item]);
+                result.Add(list1.First(item => f[item] == max));
+                list.RemoveAll(list1.Contains);
+                if (ProgressCallback != null)
+                    ProgressCallback(current += list1.Count(), total);
             }
-            dataSource = new StackListQueue<object>(result.Keys);
+            dataSource = result;
         }
 
         public string GetText(IEnumerable<object> dataSource)
