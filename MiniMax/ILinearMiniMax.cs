@@ -23,7 +23,7 @@ namespace MiniMax
         /// <summary>
         ///     Вектор смысла ограничений
         /// </summary>
-        Vector<CompareOperand> R { get; set; }
+        Vector<Comparer> R { get; set; }
 
         /// <summary>
         ///     Коэффициенты целевой функции

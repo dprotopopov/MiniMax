@@ -103,7 +103,7 @@
     <Compile Include="BooleanMultiBranchAndBoundSolver.cs" />
     <Compile Include="BranchAndBound.cs" />
     <Compile Include="Builder.cs" />
-    <Compile Include="CompareOperand.cs" />
+    <Compile Include="Comparer.cs" />
     <Compile Include="Forms\BuildChooseDialog.cs">
       <SubType>Form</SubType>
     </Compile>

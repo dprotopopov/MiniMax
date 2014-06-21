@@ -24,7 +24,8 @@ namespace MiniMax
     /// </summary>
     public class BooleanTreeBranchAndBoundSolver<T> : ISolver<T>
     {
-        public bool Execute(ILinearMiniMax<T> minimax, ref IEnumerable<Vector<T>> optimalVectors, ref IEnumerable<T> optimalValues, ITrace trace)
+        public bool Execute(ILinearMiniMax<T> minimax, ref IEnumerable<Vector<T>> optimalVectors,
+            ref IEnumerable<T> optimalValues, ITrace trace)
         {
             Debug.Assert(minimax.A.Rows == minimax.R.Count());
             Debug.Assert(minimax.A.Rows == minimax.B.Count());
@@ -74,7 +75,15 @@ namespace MiniMax
                         appendLineCallback(
                             "Удаляем варианты подмножеств, для которых существует более лучшая оценка целевой функции");
 
-                    list.RemoveAll(item => item.FuncMax < maxMin);
+                    switch (minimax.Target)
+                    {
+                        case Target.Maximum:
+                            list.RemoveAll(item => item.FuncMax < maxMin);
+                            break;
+                        case Target.Minimum:
+                            list.RemoveAll(item => item.FuncMin > minMax);
+                            break;
+                    }
 
                     if (appendLineCallback != null)
                         appendLineCallback(string.Format("Количество подмножеств = {0}", list.Count));
@@ -99,8 +108,8 @@ namespace MiniMax
                 new StackListQueue<Vector<T>>(
                     list.Select(item => new Vector<T>(item.Vector.Select(b => b ? (T) (dynamic) 1 : default(T)))));
             optimalValues =
-                new StackListQueue<T>(list.Select(item => (T) (dynamic) ((double) minimax.Target*item.FuncMin)));
-            Debug.Assert(list.All(item => Math.Abs(item.FuncMin - item.FuncMax) <= 0));
+                new StackListQueue<T>(list.Select(item => (T) (dynamic) (item.FuncMin)));
+            Debug.Assert(list.All(item => item.FuncMin <= item.FuncMax));
             if (compliteCallback != null) compliteCallback();
             return true;
         }
@@ -114,27 +123,12 @@ namespace MiniMax
                     Enumerable.Range(0, vector.Count)
                         .Where(index => vector[index])
                         .Sum(index => Convert.ToDouble(minimax.C[index]));
-                switch (minimax.Target)
-                {
-                    case Target.Maximum:
-                        FuncMin = value + Enumerable.Range(vector.Count, minimax.C.Count - vector.Count)
-                            .Where(index => IsNegative(minimax.C[index]))
-                            .Sum(index => Convert.ToDouble(minimax.C[index]));
-                        FuncMax = value + Enumerable.Range(vector.Count, minimax.C.Count - vector.Count)
-                            .Where(index => IsPositive(minimax.C[index]))
-                            .Sum(index => Convert.ToDouble(minimax.C[index]));
-                        break;
-                    case Target.Minimum:
-                        FuncMax = -(value + Enumerable.Range(vector.Count, minimax.C.Count - vector.Count)
-                            .Where(index => IsNegative(minimax.C[index]))
-                            .Sum(index => Convert.ToDouble(minimax.C[index])));
-                        FuncMin = -(value + Enumerable.Range(vector.Count, minimax.C.Count - vector.Count)
-                            .Where(index => IsPositive(minimax.C[index]))
-                            .Sum(index => Convert.ToDouble(minimax.C[index])));
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
+                FuncMin = value + Enumerable.Range(vector.Count, minimax.C.Count - vector.Count)
+                    .Where(index => IsNegative(minimax.C[index]))
+                    .Sum(index => Convert.ToDouble(minimax.C[index]));
+                FuncMax = value + Enumerable.Range(vector.Count, minimax.C.Count - vector.Count)
+                    .Where(index => IsPositive(minimax.C[index]))
+                    .Sum(index => Convert.ToDouble(minimax.C[index]));
                 ArgBound = new Vector<double>();
                 int k = 0;
                 foreach (double v in minimax.B.Select(b => -Convert.ToDouble(b)
@@ -144,12 +138,12 @@ namespace MiniMax
                 {
                     switch (minimax.R[k])
                     {
-                        case CompareOperand.Ge:
+                        case Comparer.Ge:
                             ArgBound.Add(v + Enumerable.Range(vector.Count, minimax.A[k].Count - vector.Count)
                                 .Where(index => IsPositive(minimax.A[k][index]))
                                 .Sum(index => Convert.ToDouble(minimax.A[k][index])));
                             break;
-                        case CompareOperand.Le:
+                        case Comparer.Le:
                             ArgBound.Add(-v - Enumerable.Range(vector.Count, minimax.A[k].Count - vector.Count)
                                 .Where(index => IsNegative(minimax.A[k][index]))
                                 .Sum(index => Convert.ToDouble(minimax.A[k][index])));

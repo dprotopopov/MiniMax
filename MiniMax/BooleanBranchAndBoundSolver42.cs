@@ -33,7 +33,8 @@ namespace MiniMax
         /// <param name="optimalValues"></param>
         /// <param name="trace"></param>
         /// <returns></returns>
-        public bool Execute(ILinearMiniMax<T> minimax, ref IEnumerable<Vector<T>> optimalVectors, ref IEnumerable<T> optimalValues, ITrace trace)
+        public bool Execute(ILinearMiniMax<T> minimax, ref IEnumerable<Vector<T>> optimalVectors,
+            ref IEnumerable<T> optimalValues, ITrace trace)
         {
             // Реализуем алгоритм только для случая наращивания базиса по одной переменной
             Debug.Assert(H == 1);
@@ -52,7 +53,7 @@ namespace MiniMax
             int n = minimax.C.Count;
 
             // Величине рекорда присваивается заведомо плохое решение
-            double r = Double.MinValue;
+            double r = minimax.Target == Target.Maximum ? Double.MinValue : Double.MaxValue;
             BooleanEnumPlan optimal = null;
 
             // Исходным выбранным частичным планом считается тот, базис которого пуст
@@ -102,11 +103,15 @@ namespace MiniMax
                     int max1 = stack.Max(item => item.Indeces.Count);
                     list = new StackListQueue<BooleanEnumPlan>(stack.Where(item => item.Indeces.Count == max1));
                     double maxMax = list.Max(item => item.FuncMax);
-                    element = list.First(item => item.FuncMax == maxMax);
+                    double minMin = list.Min(item => item.FuncMin);
+                    element = minimax.Target == Target.Maximum
+                        ? list.First(item => item.FuncMax == maxMax)
+                        : list.First(item => item.FuncMin == minMin);
                     stack.Remove(element);
                     Debug.WriteLine("element = {0}", element);
 
-                    if (r <= maxMax)
+                    if (minimax.Target == Target.Maximum && r <= maxMax ||
+                        minimax.Target == Target.Minimum && r >= minMin)
                     {
                         // Если оценка элемента лучше рекорда
                         if (appendLineCallback != null)
@@ -120,7 +125,7 @@ namespace MiniMax
                             // и запоминаем этот план
                             if (appendLineCallback != null)
                                 appendLineCallback("Запоминаем в рекорд оценку");
-                            r = element.FuncMax;
+                            r = minimax.Target == Target.Maximum ? element.FuncMax : element.FuncMin;
                             optimal = new BooleanEnumPlan(element);
                         }
                         else
@@ -156,7 +161,7 @@ namespace MiniMax
             optimalVectors =
                 new StackListQueue<Vector<T>>(
                     new Vector<T>(optimal.Indeces.Select(index => optimal.Vector[index] ? (T) (dynamic) 1 : default(T))));
-            optimalValues = new StackListQueue<T>((T) (dynamic) ((double) minimax.Target*r));
+            optimalValues = new StackListQueue<T>((T) (dynamic) r);
             if (compliteCallback != null) compliteCallback();
             return true;
         }
@@ -175,27 +180,12 @@ namespace MiniMax
                     Enumerable.Range(0, vector.Count)
                         .Where(index => vector[index])
                         .Sum(index => Convert.ToDouble(minimax.C[indeces[index]]));
-                switch (minimax.Target)
-                {
-                    case Target.Maximum:
-                        FuncMin = value + Enumerable.Range(0, n).Except(indeces)
-                            .Where(index => IsNegative(minimax.C[index]))
-                            .Sum(index => Convert.ToDouble(minimax.C[index]));
-                        FuncMax = value + Enumerable.Range(0, n).Except(indeces)
-                            .Where(index => IsPositive(minimax.C[index]))
-                            .Sum(index => Convert.ToDouble(minimax.C[index]));
-                        break;
-                    case Target.Minimum:
-                        FuncMax = -(value + Enumerable.Range(0, n).Except(indeces)
-                            .Where(index => IsNegative(minimax.C[index]))
-                            .Sum(index => Convert.ToDouble(minimax.C[index])));
-                        FuncMin = -(value + Enumerable.Range(0, n).Except(indeces)
-                            .Where(index => IsPositive(minimax.C[index]))
-                            .Sum(index => Convert.ToDouble(minimax.C[index])));
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
+                FuncMin = value + Enumerable.Range(0, n).Except(indeces)
+                    .Where(index => IsNegative(minimax.C[index]))
+                    .Sum(index => Convert.ToDouble(minimax.C[index]));
+                FuncMax = value + Enumerable.Range(0, n).Except(indeces)
+                    .Where(index => IsPositive(minimax.C[index]))
+                    .Sum(index => Convert.ToDouble(minimax.C[index]));
                 ArgBound = new Vector<double>();
                 int k = 0;
                 foreach (double v in minimax.B.Select(b => -Convert.ToDouble(b)
@@ -207,12 +197,12 @@ namespace MiniMax
                 {
                     switch (minimax.R[k])
                     {
-                        case CompareOperand.Ge:
+                        case Comparer.Ge:
                             ArgBound.Add(v + Enumerable.Range(0, n).Except(indeces)
                                 .Where(index => IsPositive(minimax.A[k][index]))
                                 .Sum(index => Convert.ToDouble(minimax.A[k][index])));
                             break;
-                        case CompareOperand.Le:
+                        case Comparer.Le:
                             ArgBound.Add(-v - Enumerable.Range(0, n).Except(indeces)
                                 .Where(index => IsNegative(minimax.A[k][index]))
                                 .Sum(index => Convert.ToDouble(minimax.A[k][index])));

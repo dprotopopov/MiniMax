@@ -2,7 +2,7 @@
 {
     public enum Target
     {
-        Maximum = 1,
-        Minimum = -1
+        Minimum = 1,
+        Maximum = -1,
     }
 }

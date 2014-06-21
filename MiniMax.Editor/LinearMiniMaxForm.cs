@@ -45,13 +45,13 @@ namespace MiniMax.Editor
                 Enumerable.Range(0, restrictions).Select(r => new Vector<double>(Enumerable.Repeat(0.0, variables))));
             B = new Vector<double>(Enumerable.Repeat(0.0, restrictions));
             C = new Vector<double>(Enumerable.Repeat(0.0, variables));
-            R = new Vector<CompareOperand>(Enumerable.Repeat(CompareOperand.Ge, restrictions));
+            R = new Vector<Comparer>(Enumerable.Repeat(Comparer.Ge, restrictions));
             Target = Target.Maximum;
 
             string[,] theData = DataGridViewSystem.TheData;
             var read = new object();
             var write = new object();
-            theData[0, variables] = Target == Target.Maximum ? "max" : Target == Target.Minimum ? "min" : "";
+            theData[0, variables] = (Target == Target.Maximum) ? "max" : Target == Target.Minimum ? "min" : "";
             Parallel.ForEach(Enumerable.Range(0, variables),
                 index =>
                 {
@@ -74,11 +74,11 @@ namespace MiniMax.Editor
                 });
             Parallel.ForEach(Enumerable.Range(0, restrictions), index =>
             {
-                CompareOperand r;
+                Comparer r;
                 double b;
                 lock (read) r = R[index];
                 lock (read) b = B[index];
-                string sr = r == CompareOperand.Ge ? ">=" : r == CompareOperand.Le ? "<=" : "==";
+                string sr = (r == Comparer.Ge) ? ">=" : r == Comparer.Le ? "<=" : "==";
                 string sb = b.ToString(CultureInfo.InvariantCulture);
                 lock (write) theData[index + targets, variables] = sr;
                 lock (write) theData[index + targets, variables + 1] = sb;
@@ -94,7 +94,7 @@ namespace MiniMax.Editor
         public int Targets { get; set; }
         public Matrix<double> A { get; set; }
         public Vector<double> B { get; set; }
-        public Vector<CompareOperand> R { get; set; }
+        public Vector<Comparer> R { get; set; }
         public Vector<double> C { get; set; }
         public Target Target { get; set; }
 
@@ -125,7 +125,7 @@ namespace MiniMax.Editor
             var read = new object();
             var write = new object();
             string st = theData[0, variables];
-            Target = string.CompareOrdinal(st, "min") == 0 ? Target.Minimum : Target.Maximum;
+            Target = (string.CompareOrdinal(st, "min") == 0) ? Target.Minimum : Target.Maximum;
             Parallel.ForEach(Enumerable.Range(0, variables),
                 index =>
                 {
@@ -152,11 +152,11 @@ namespace MiniMax.Editor
                 string sb;
                 lock (read) sr = theData[i, variables];
                 lock (read) sb = theData[i, variables + 1];
-                CompareOperand r = string.CompareOrdinal(sr, ">=") == 0
-                    ? CompareOperand.Ge
+                Comparer r = (string.CompareOrdinal(sr, ">=") == 0)
+                    ? Comparer.Ge
                     : string.CompareOrdinal(sr, "<=") == 0
-                        ? CompareOperand.Le
-                        : CompareOperand.Eq;
+                        ? Comparer.Le
+                        : Comparer.Eq;
                 double b = Double.ParseAsString(sb.Replace('.', ','));
                 lock (write) R[i - targets] = r;
                 lock (write) B[i - targets] = b;
@@ -244,29 +244,81 @@ namespace MiniMax.Editor
 
         public void Simple()
         {
-            var theData = new string[Targets + Restrictions, Variables + 2];
+            Targets = 1;
+            Restrictions = 3;
+            Variables = 2;
+            A = new Matrix<double>(new[]
+            {
+                new Vector<double>(new[] {3.0, 1.0}),
+                new Vector<double>(new[] {4.0, 3.0}),
+                new Vector<double>(new[] {1.0, 2.0})
+            }
+                );
+            B = new Vector<double>(new[] {3.0, 6.0, 3.0});
+            C = new Vector<double>(new[] {2.0, 1.0});
+            R = new Vector<Comparer>(new[] {Comparer.Ge, Comparer.Ge, Comparer.Le});
+            Target = Target.Minimum;
+
+            string[,] theData = new string[Targets + Restrictions, Variables + 2];
+            var read = new object();
             var write = new object();
-            theData[0, Variables] = "max";
+            theData[0, Variables] = (Target == Target.Maximum) ? "max" : Target == Target.Minimum ? "min" : "";
             Parallel.ForEach(Enumerable.Range(0, Variables),
-                index => { lock (write) theData[0, index] = "1"; });
+                index =>
+                {
+                    double c;
+                    lock (read) c = C[index];
+                    string s = c.ToString(CultureInfo.InvariantCulture);
+                    lock (write) theData[0, index] = s;
+                });
             Parallel.ForEach(
-                from i in Enumerable.Range(Targets, Restrictions)
+                from i in Enumerable.Range(0, Restrictions)
                 from j in Enumerable.Range(0, Variables)
                 select new {row = i, col = j}, pair =>
                 {
                     int i = pair.row;
                     int j = pair.col;
-                    lock (write)
-                        theData[i, j] =
-                            ((double) (((j + 1)%(i + 1)) + ((i + 1)%(j + 1)))/(1 + i + j)).ToString(
-                                CultureInfo.InvariantCulture);
+                    double a;
+                    lock (read) a = A[i][j];
+                    string s = a.ToString(CultureInfo.InvariantCulture);
+                    lock (write) theData[i + Targets, j] = s;
                 });
-            Parallel.ForEach(Enumerable.Range(Targets, Restrictions), index =>
+            Parallel.ForEach(Enumerable.Range(0, Restrictions), index =>
             {
-                lock (write) theData[index, Variables] = "<=";
-                lock (write) theData[index, Variables + 1] = (1.5).ToString(CultureInfo.InvariantCulture);
+                Comparer r;
+                double b;
+                lock (read) r = R[index];
+                lock (read) b = B[index];
+                string sr = (r == Comparer.Ge) ? ">=" : r == Comparer.Le ? "<=" : "==";
+                string sb = b.ToString(CultureInfo.InvariantCulture);
+                lock (write) theData[index + Targets, Variables] = sr;
+                lock (write) theData[index + Targets, Variables + 1] = sb;
             });
             DataGridViewSystem.TheData = theData;
+
+            //    var theData = new string[Targets + Restrictions, Variables + 2];
+            //    var write = new object();
+            //    theData[0, Variables] = "max";
+            //    Parallel.ForEach(Enumerable.Range(0, Variables),
+            //        index => { lock (write) theData[0, index] = "1"; });
+            //    Parallel.ForEach(
+            //        from i in Enumerable.Range(Targets, Restrictions)
+            //        from j in Enumerable.Range(0, Variables)
+            //        select new {row = i, col = j}, pair =>
+            //        {
+            //            int i = pair.row;
+            //            int j = pair.col;
+            //            lock (write)
+            //                theData[i, j] =
+            //                    ((double) (((j + 1)%(i + 1)) + ((i + 1)%(j + 1)))/(1 + i + j)).ToString(
+            //                        CultureInfo.InvariantCulture);
+            //        });
+            //    Parallel.ForEach(Enumerable.Range(Targets, Restrictions), index =>
+            //    {
+            //        lock (write) theData[index, Variables] = "<=";
+            //        lock (write) theData[index, Variables + 1] = (1.5).ToString(CultureInfo.InvariantCulture);
+            //    });
+            //    DataGridViewSystem.TheData = theData;
         }
     }
 }
