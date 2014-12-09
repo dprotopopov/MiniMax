@@ -158,6 +158,8 @@ namespace MiniMax
             }
 
             // Завершаем алгоритм и возвращаем найденное решение
+            if (optimal == null) return false;
+
             optimalVectors =
                 new StackListQueue<Vector<T>>(
                     new Vector<T>(optimal.Indeces.Select(index => optimal.Vector[index] ? (T) (dynamic) 1 : default(T))));

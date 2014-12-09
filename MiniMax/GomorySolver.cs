@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using MyLibrary.Collections;
 using MyLibrary.Trace;
 using MyMath;
@@ -415,7 +414,7 @@ namespace MiniMax
 
                 if (this[0][0] > 0) return false;
 
-                this[0]=Pop();
+                this[0]=this[this.Count]; this.RemoveAt(this.Count-1);
 
                 rowsIndex = new StackListQueue<int>(RowsIndex);
                 rowsIndex.Pop();
@@ -485,25 +484,6 @@ namespace MiniMax
                 var columnsIndex = new StackListQueue<int>(ColumnsIndex);
 
                 // Подготовка данных для шага симплекс метода
-
-                var prev = new double[Rows, Columns];
-                var next = new double[Rows, Columns];
-
-                var read = new object();
-                var write = new object();
-
-                Parallel.ForEach(
-                    from i in Enumerable.Range(0, Rows)
-                    from j in Enumerable.Range(0, Columns)
-                    select new {row = i, col = j}, pair =>
-                    {
-                        int i = pair.row;
-                        int j = pair.col;
-                        double x;
-                        lock (read) x = this[i][j];
-                        lock (write) prev[i, j] = x;
-                    });
-
                 for (;;)
                 {
                     // Выбор ведущих строки и столбца.
@@ -563,24 +543,7 @@ namespace MiniMax
                     Debug.WriteLine(
                         "Пересчет симплекс-таблицы. Выполняем преобразования симплексной таблицы методом Жордано-Гаусса");
 
-                    GaussJordanStep(Matrix<double>.Transform.ByRows, prev, next, row, col);
-
-                    // Считывание данных из симплекс-метода
-                    Parallel.ForEach(
-                        from i in Enumerable.Range(0, Rows)
-                        from j in Enumerable.Range(0, Columns)
-                        select new {row = i, col = j}, pair =>
-                        {
-                            int i = pair.row;
-                            int j = pair.col;
-                            double x;
-                            lock (read) x = next[i, j];
-                            lock (write) this[i][j] = x;
-                        });
-
-                    double[,] t = prev;
-                    prev = next;
-                    next = t;
+                    GaussJordanStep(Matrix<double>.Transform.TransformByRows, row, col);
 
                     columnsIndex[columnsIndex.IndexOf(col)] = rowsIndex[row - 1];
                     rowsIndex[row - 1] = col;
